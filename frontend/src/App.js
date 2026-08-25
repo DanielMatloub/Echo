@@ -118,7 +118,7 @@ export default function App() {
       {/* Transcript */}
       <div style={{
         flex: 1,
-        padding: "80px 28px 120px",
+        padding: "100px 28px 120px",
         maxWidth: 800,
         margin: "0 auto",
         width: "100%",
