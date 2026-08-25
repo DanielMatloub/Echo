@@ -5,6 +5,7 @@ export default function App() {
   const [listening, setListening] = useState(false);
   const [supported, setSupported] = useState(true);
   const [interim, setInterim] = useState("");
+  const [sensitivity, setSensitivity] = useState(0.5);
   const recognitionRef = useRef(null);
   const bottomRef = useRef(null);
 
@@ -32,8 +33,11 @@ export default function App() {
       let interimText = "";
       for (let i = e.resultIndex; i < e.results.length; i++) {
         const transcript = e.results[i][0].transcript;
+        const confidence = e.results[i][0].confidence;
         if (e.results[i].isFinal) {
-          setLines(prev => [...prev, transcript.trim()]);
+          if (confidence === 0 || confidence >= 1 - sensitivity) {
+            setLines(prev => [...prev, transcript.trim()]);
+          }
           setInterim("");
         } else {
           interimText += transcript;
@@ -84,6 +88,7 @@ export default function App() {
       display: "flex",
       flexDirection: "column",
     }}>
+    
       {/* Header */}
       <div style={{
         position: "fixed",
@@ -96,7 +101,19 @@ export default function App() {
         zIndex: 10,
       }}>
         <span style={{ fontWeight: 700, fontSize: 20, letterSpacing: "-0.3px" }}>Echo</span>
-        <div style={{ display: "flex", gap: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ fontSize: 11, color: "#6b6b85" }}>Sensitivity</span>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={sensitivity}
+              onChange={e => setSensitivity(parseFloat(e.target.value))}
+              style={{ width: 80, accentColor: "#2563eb" }}
+            />
+          </div>
           {lines.length > 0 && (
             <button onClick={clearAll} style={btnStyle("#1c1c26", "#6b6b85")}>
               Clear
