@@ -2,7 +2,7 @@
 
 Live audio captioning in your browser.
 
-**Live demo:** https://echo-[your-url].vercel.app
+**Live demo:** https://echo-seven-hazel.vercel.app/
 
 ## What it does
 
